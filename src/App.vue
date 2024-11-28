@@ -1,24 +1,12 @@
 <script setup>
 
 import { reactive } from 'vue';
+import Header from './components/Header.vue'
 
 const estado = reactive({
   filtro: 'todas',
   novaTarefa: '',
-  tarefas: [
-    // {
-    //   titulo: 'Estudar Vue',
-    //   finalizada: false,
-    // },
-    // {
-    //   titulo: 'Estudar SASS',
-    //   finalizada: true,
-    // },
-    // {
-    //   titulo: 'Estudar React',
-    //   finalizada: false,
-    // },
-  ]
+  tarefas: []
 })
 
 const listaPendentes = () => {
@@ -55,10 +43,14 @@ estado.novaTarefa = '';
 
 <template>
   <div class="container">
-    <header class="p-5 my-4 bg-light rounded-3">
+    <!-- Componente -->
+    <Header :lista-pendentes-length="listaPendentes().length" />
+
+    <!-- Antes da componentização -->
+    <!-- <header class="p-5 my-4 bg-light rounded-3">
       <h1>Minhas tarefas</h1>
       <p>Você possui {{ listaPendentes().length }} tarefas</p>
-    </header>
+    </header> -->
 
     <form @submit.prevent="adicionaTarefa">
       <div class="row">
