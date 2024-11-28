@@ -1,47 +1,111 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+
+import { reactive } from 'vue';
+
+const estado = reactive({
+  filtro: 'todas',
+  novaTarefa: '',
+  tarefas: [
+    // {
+    //   titulo: 'Estudar Vue',
+    //   finalizada: false,
+    // },
+    // {
+    //   titulo: 'Estudar SASS',
+    //   finalizada: true,
+    // },
+    // {
+    //   titulo: 'Estudar React',
+    //   finalizada: false,
+    // },
+  ]
+})
+
+const listaPendentes = () => {
+  return estado.tarefas.filter(tarefa => !tarefa.finalizada)
+}
+
+const listaFinalizadas = () => {
+  return estado.tarefas.filter(tarefa => tarefa.finalizada)
+}
+
+const listaFiltradas = () => {
+  const { filtro } = estado; // Desestruturação, equivalente a const filtro = estado.filtro;
+
+  switch (filtro) {
+    case 'pendentes':
+      return listaPendentes();
+    case 'finalizadas':
+      return listaFinalizadas();
+    default:
+      return estado.tarefas;
+  }
+
+}
+
+const adicionaTarefa = () => {
+  estado.tarefas.push({
+    titulo: estado.novaTarefa,
+    finalizada: false
+});
+estado.novaTarefa = '';
+}
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="container">
+    <header class="p-5 my-4 bg-light rounded-3">
+      <h1>Minhas tarefas</h1>
+      <p>Você possui {{ listaPendentes().length }} tarefas</p>
+    </header>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+    <form @submit.prevent="adicionaTarefa">
+      <div class="row">
+        <div class="col">
+          <input
+          @change="evento => estado.novaTarefa = evento.target.value"
+          :value="estado.novaTarefa"
+          required 
+          class="form-control" 
+          type="text" 
+          placeholder="Digite uma nova atividade" >
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary">Adicionar</button>
+        </div>
+        <div @change="evento => estado.filtro = evento.target.value" class="col-md-2">
+          <select class="form-control">
+            <option value="todas">Todas</option>
+            <option value="pendentes">Pendentes</option>
+            <option value="finalizadas">Finalizadas</option>
+          </select>
+        </div>
+      </div>
+    </form>
 
-  <main>
-    <TheWelcome />
-  </main>
+    <ul class="list-group mt-4">
+      <li class="list-group-item" v-for="tarefa in listaFiltradas()">
+        <input 
+          @change="evento => tarefa.finalizada = evento.target.checked"
+          :checked="tarefa.finalizada" 
+          :id="tarefa.titulo" 
+          type="checkbox">
+        <label 
+        class="ms-3" 
+        :class="{done: tarefa.finalizada}" 
+        :for="tarefa.titulo">
+          {{  tarefa.titulo }}
+        </label>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+
+.done {
+  text-decoration: line-through;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
