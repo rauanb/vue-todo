@@ -1,7 +1,8 @@
 <script setup>
 
 import { reactive } from 'vue';
-import Header from './components/Header.vue'
+import Header from './components/Header.vue';
+import Form from './components/Form.vue';
 
 const estado = reactive({
   filtro: 'todas',
@@ -52,7 +53,13 @@ estado.novaTarefa = '';
       <p>Você possui {{ listaPendentes().length }} tarefas</p>
     </header> -->
 
-    <form @submit.prevent="adicionaTarefa">
+    <!-- Componente -->
+    <Form :adiciona-tarefa="adicionaTarefa"
+    :estado-nova-tarefa="estado.novaTarefa"
+    :altera-nova-tarefa="evento => estado.novaTarefa = evento.target.value"
+    :altera-filtro="evento => estado.filtro = evento.target.value"/>
+
+    <!-- <form @submit.prevent="adicionaTarefa">
       <div class="row">
         <div class="col">
           <input
@@ -74,7 +81,7 @@ estado.novaTarefa = '';
           </select>
         </div>
       </div>
-    </form>
+    </form> -->
 
     <ul class="list-group mt-4">
       <li class="list-group-item" v-for="tarefa in listaFiltradas()">
