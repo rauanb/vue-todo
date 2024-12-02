@@ -3,6 +3,7 @@
 import { reactive } from 'vue';
 import Header from './components/Header.vue';
 import Form from './components/Form.vue';
+import List from './components/List.vue'
 
 const estado = reactive({
   filtro: 'todas',
@@ -83,7 +84,10 @@ estado.novaTarefa = '';
       </div>
     </form> -->
 
-    <ul class="list-group mt-4">
+    <!-- Componente -->
+    <List :lista-filtradas="listaFiltradas()"/>
+
+    <!-- <ul class="list-group mt-4">
       <li class="list-group-item" v-for="tarefa in listaFiltradas()">
         <input 
           @change="evento => tarefa.finalizada = evento.target.checked"
@@ -97,7 +101,7 @@ estado.novaTarefa = '';
           {{  tarefa.titulo }}
         </label>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
