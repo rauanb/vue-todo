@@ -7,6 +7,12 @@
         <h1>Minhas tarefas</h1>
         <!-- <p>Você possui {{ listaPendentes().length }} tarefas</p> -->
         <!-- Componentização -->
-        <p>Você possui {{ props.listaPendentesLength }} tarefas</p>
+        <div v-if="props.listaPendentesLength == 1">
+            <p>Você possui {{ props.listaPendentesLength }} tarefa</p>
+        </div>
+        <div v-else-if="props.listaPendentesLength > 1">
+            <p>Você possui {{ props.listaPendentesLength }} tarefas</p>
+        </div>
+        <p v-else>Parabéns! Não há tarefas pendentes :)</p>
     </header>
 </template>
